@@ -79,9 +79,9 @@ public class ProductController {
 		try {
 			List<Product> products = service.list(userId);
 			if (products.size() >= 0) {
-				modelAndView.addObject("data: ",products);
+				modelAndView.addObject("data",products);
 				modelAndView.addObject("error", null);
-				modelAndView.setStatus(HttpStatus.CREATED);
+				modelAndView.setStatus(HttpStatus.OK);
 			} else {
 				modelAndView.addObject("data", null);
 				modelAndView.addObject("error", "User not exist");
