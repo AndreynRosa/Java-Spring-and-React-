@@ -27,12 +27,12 @@ class Login extends Component {
   }
   async onSaveUser() {
     try {
-      let resp =await this.userService.save({
+      await this.userService.save({
         email: this.state.email,
         password: this.state.password
       });
     } catch (e) {
-        console.log(e)
+    
         alert("Usuario ja existe ou senha menor que 8 carateres");
     }
   }

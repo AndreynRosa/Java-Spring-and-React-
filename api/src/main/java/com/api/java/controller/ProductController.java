@@ -55,7 +55,7 @@ public class ProductController {
 		try {
 			Product product = service.remove(id);
 			if (null != product) {
-				modelAndView.addObject("data: ",""+ product.getName()+" deleted");
+				modelAndView.addObject("data",""+ product.getName()+" deleted");
 				modelAndView.addObject("error", null);
 				modelAndView.setStatus(HttpStatus.CREATED);
 			} else {

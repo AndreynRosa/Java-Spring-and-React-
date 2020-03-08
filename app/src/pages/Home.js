@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Container, Table, Button, Modal } from "react-bootstrap";
+import { Container, Table, Button } from "react-bootstrap";
 import ProductService from "../services/ProductService";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import ProductModal from "../component/ProductModal";
 
 class Home extends Component {

@@ -19,9 +19,6 @@ public class UserService {
 	@Autowired
 	private UserDao dao;
 
-	private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
-			.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
 	public User save(User userRequest) {
 		if (null == userRequest.getId()) {
 			return dao.save(userRequest);
@@ -33,11 +30,6 @@ public class UserService {
 
 	private boolean updateUser(User userRequest) {
 		return userRequest.getEmail() != null && userRequest.getPassword() != null;
-	}
-
-	private boolean assertsEmail(String email) {
-		Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-		return matcher.find();
 	}
 
 	public User remove(Integer id) {
@@ -66,7 +58,7 @@ public class UserService {
 	private AuthenticatedUserDto getAuthenticatedUser(UserDto userRequest) {
 		User user = findByEmail(userRequest.getEmail());
 		AuthenticatedUserDto autUser = new AuthenticatedUserDto();
-		if (null != user && user.getPassword().equals(userRequest.getPassword())) {
+		if (isAuthenticatedUser(userRequest, user)) {
 			autUser.setEmail(user.getEmail());
 			autUser.setId(user.getId());
 
@@ -74,6 +66,10 @@ public class UserService {
 		} else {
 			return null;
 		}
+	}
+
+	private boolean isAuthenticatedUser(UserDto userRequest, User user) {
+		return null != user && user.getPassword().equals(userRequest.getPassword());
 	}
 
 	private User findByEmail(String email) {

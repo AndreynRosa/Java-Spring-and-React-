@@ -23,9 +23,9 @@ public class PrudctService {
 	private UserService userService;
 
 	public Product save(Product productRequest, Integer userId) {
-		if (userService.exisits(userId) && productValuesAsserts(productRequest)) {
+		if (assertsBeforeSave(productRequest, userId)) {
 			productRequest.setUser(userService.findById(userId));
-			if (null != productRequest.getId()) {
+			if (isUpdateRecord(productRequest)) {
 				Product product = findById(productRequest.getId());
 				productRequest.setId(product.getId());
 				Product resp = dao.save(productRequest);
@@ -36,6 +36,19 @@ public class PrudctService {
 			}
 		}
 		return null;
+	}
+
+	private boolean isUpdateRecord(Product productRequest) {
+		return null != productRequest.getId();
+	}
+
+	private boolean assertsBeforeSave(Product productRequest, Integer userId) {
+		return userService.exisits(userId) && productValuesAsserts(productRequest);
+	}
+	
+	private boolean productValuesAsserts(Product productRequest) {
+
+		return (productRequest.getPrice().compareTo(productRequest.getCoast()) > 0);
 	}
 
 	@Transactional
@@ -49,10 +62,7 @@ public class PrudctService {
 		return opt.orElse(null);
 	}
 
-	private boolean productValuesAsserts(Product productRequest) {
 
-		return (productRequest.getPrice().compareTo(productRequest.getCoast()) > 0);
-	}
 
 	public Product remove(Integer id) {
 		Product product = findById(id);
@@ -74,12 +84,12 @@ public class PrudctService {
 	}
 
 	private List<Product> handlingUserData(List<Product> products) {
-		List<Product> dataOrganizing = new ArrayList<Product>();
+		List<Product> producstReps = new ArrayList<Product>();
 		for (Product product : products) {
 
-			dataOrganizing.add(userService.handlingPrductUser(product));
+			producstReps.add(userService.handlingPrductUser(product));
 		}
-		return dataOrganizing;
+		return producstReps;
 	}
 
 }
